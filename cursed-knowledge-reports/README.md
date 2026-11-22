@@ -6,4 +6,6 @@ glitches, file-format traps), written up following
 with the [report template](https://github.com/qdvc-apps/qdvc-cursed-knowledge/blob/main/reports/TEMPLATE.md),
 for filing in the qdvc-cursed-knowledge `reports/inbox/`.
 
-No reports yet.
+| Date | Report | Status |
+|---|---|---|
+| 2026-11-22 | [A `??` fallback written as an unlabeled tuple silently drops the tuple's labels](2026-11-22-macos-swift-nil-coalescing-drops-tuple-labels.md) | Fix not yet confirmed |

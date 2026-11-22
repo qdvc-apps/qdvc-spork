@@ -33,6 +33,12 @@ struct AppAlert: Identifiable {
     }
 }
 
+/// Per-repository view of the last fetch. A named type, not a bare tuple: with
+/// `x ?? ([:], [])` Swift infers the unlabeled tuple type and silently drops the
+/// labels (Cursed Knowledge report in cursed-knowledge-reports/).
+typealias FetchContext = (errors: [String: String], offline: [String])
+let noFetchContext: FetchContext = (errors: [:], offline: [])
+
 struct FetchReport {
     var servers: [String: ServerStatus] = [:]
     var index: [String: String] = [:]              // Census.indexKey(repo, remote) -> server key
@@ -40,7 +46,7 @@ struct FetchReport {
     var fetched = 0
     var finishedAt = Date()
 
-    func context(for repo: String) -> (errors: [String: String], offline: [String]) {
+    func context(for repo: String) -> FetchContext {
         var errs: [String: String] = [:]
         var offline: [String] = []
         let prefix = repo + "\u{0}"
@@ -140,7 +146,7 @@ final class AppModel {
 
     func refreshSummary(_ path: String) {
         let runner = self.runner
-        let ctx = lastFetch?.context(for: path) ?? ([:], [])
+        let ctx: FetchContext = lastFetch?.context(for: path) ?? noFetchContext
         Task {
             let s = try? await background {
                 Census.summarize(path: path, runner: runner, fetchErrors: ctx.errors, offline: ctx.offline)

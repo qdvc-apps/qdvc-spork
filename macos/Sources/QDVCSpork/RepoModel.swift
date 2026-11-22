@@ -108,8 +108,8 @@ final class RepoModel {
         return remotes.first?.name
     }
 
-    var fetchContext: (errors: [String: String], offline: [String]) {
-        app.lastFetch?.context(for: path) ?? ([:], [])
+    var fetchContext: FetchContext {
+        app.lastFetch?.context(for: path) ?? noFetchContext
     }
 
     // MARK: plumbing
