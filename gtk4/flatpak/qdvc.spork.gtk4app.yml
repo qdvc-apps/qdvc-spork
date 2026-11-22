@@ -1,0 +1,87 @@
+# Flatpak manifest for QDVC Spork (GTK 4 / libadwaita edition).
+# Local use only; not published on Flathub. Build with: scripts/build-app.sh --install
+#
+# YAML, not JSON, so a "*.json" rule in .gitignore can't hide it (Cursed Knowledge).
+id: qdvc.spork.gtk4app
+runtime: org.gnome.Platform
+runtime-version: '50'
+sdk: org.gnome.Sdk
+command: qdvc-spork
+
+finish-args:
+  # git fetch / pull / push need the network.
+  - --share=network
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  # Repositories, ~/.gitconfig, ~/.config/git, ~/.ssh and ~/.local/bin/spork.
+  # Repositories outside the home folder are not reachable.
+  - --filesystem=home
+  # Use the desktop's ssh-agent for SSH remotes.
+  - --socket=ssh-auth
+  # git-credential-libsecret stores HTTPS passwords in the desktop keyring.
+  - --talk-name=org.freedesktop.secrets
+
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /share/man
+  - /share/doc
+  - '*.a'
+
+modules:
+  # An ssh client for SSH remotes (the GNOME runtime doesn't promise one).
+  - name: openssh
+    buildsystem: simple
+    build-commands:
+      - test -x configure || autoreconf -fi
+      - ./configure --prefix=/app --sysconfdir=/app/etc/ssh --without-pam --disable-strip
+      - make -j${FLATPAK_BUILDER_N_JOBS} ssh
+      - install -Dm755 ssh /app/bin/ssh
+    sources:
+      - type: git
+        url: https://github.com/openssh/openssh-portable.git
+        tag: V_10_6_P1
+
+  # git itself, plus the libsecret credential helper.
+  # Pinned to the 2.54 line: from 2.55 git builds Rust code by default, which
+  # would need the rust-stable SDK extension (see docs/MAINTENANCE.md).
+  - name: git
+    buildsystem: simple
+    build-commands:
+      - make -j${FLATPAK_BUILDER_N_JOBS} prefix=/app NO_TCLTK=YesPlease NO_GETTEXT=YesPlease
+        NO_PERL=YesPlease NO_PYTHON=YesPlease INSTALL_SYMLINKS=YesPlease all
+      - make prefix=/app NO_TCLTK=YesPlease NO_GETTEXT=YesPlease NO_PERL=YesPlease
+        NO_PYTHON=YesPlease INSTALL_SYMLINKS=YesPlease install
+      - make -C contrib/credential/libsecret
+      - install -Dm755 contrib/credential/libsecret/git-credential-libsecret
+        /app/libexec/git-core/git-credential-libsecret
+      # System config inside the sandbox (prefix /app => /app/etc/gitconfig).
+      # Users' own credential.helper settings in ~/.gitconfig still win.
+      - printf '[credential]\n\thelper = libsecret\n' > /app/etc/gitconfig
+    sources:
+      - type: git
+        url: https://github.com/git/git.git
+        tag: v2.54.1
+
+  - name: qdvc-spork
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/share/qdvc-spork
+      - cp -r qdvc_spork.py sporkapp /app/share/qdvc-spork/
+      - find /app/share/qdvc-spork -name __pycache__ -prune -exec rm -rf {} +
+      - install -Dm755 flatpak/qdvc-spork.sh /app/bin/qdvc-spork
+      - install -Dm755 flatpak/spork-askpass.sh /app/bin/spork-askpass
+      - install -Dm644 data/qdvc.spork.gtk4app.desktop /app/share/applications/qdvc.spork.gtk4app.desktop
+      - install -Dm644 data/qdvc.spork.gtk4app.metainfo.xml /app/share/metainfo/qdvc.spork.gtk4app.metainfo.xml
+      - install -Dm644 data/icons/qdvc.spork.gtk4app.svg /app/share/icons/hicolor/scalable/apps/qdvc.spork.gtk4app.svg
+      - install -Dm644 data/icons/qdvc.spork.gtk4app-symbolic.svg /app/share/icons/hicolor/symbolic/apps/qdvc.spork.gtk4app-symbolic.svg
+    sources:
+      - type: dir
+        path: ..
+        skip:
+          - build
+          - .flatpak-builder
+          - tests
+          - docs

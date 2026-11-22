@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>qdvc.spork.gtk4app</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <name>QDVC Spork</name>
+  <summary>Git client for bookmarked repositories and multiple remotes</summary>
+  <developer id="org.qdvc">
+    <name>QDVC Apps</name>
+  </developer>
+  <description>
+    <p>
+      QDVC Spork is a native GNOME Git client. Bookmark the repositories you
+      care about, see their commits, changes and files side by side, and keep
+      every remote in sync.
+    </p>
+    <ul>
+      <li>Commit list with a branch graph, search, and an Uncommitted Changes row</li>
+      <li>Stage files or single hunks, commit and amend</li>
+      <li>Fetch, pull and push per remote, or push to all remotes at once</li>
+      <li>A dashboard showing which repositories need attention</li>
+      <li>Trust a local server's self-signed cert.pem without touching system settings</li>
+      <li>Open the repository you're in with <code>spork .</code></li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">qdvc.spork.gtk4app.desktop</launchable>
+  <url type="homepage">https://github.com/qdvc-apps</url>
+  <content_rating type="oars-1.1"/>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+  <requires>
+    <display_length compare="ge">900</display_length>
+  </requires>
+  <releases>
+    <release version="0.1.0" date="2026-11-22">
+      <description><p>First version.</p></description>
+    </release>
+  </releases>
+</component>

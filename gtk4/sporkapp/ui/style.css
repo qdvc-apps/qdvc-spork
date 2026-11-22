@@ -1,0 +1,84 @@
+/* QDVC Spork — extra styling on top of libadwaita. Colours use libadwaita's
+   named colours so light and dark mode both work. */
+
+.status-dot {
+  min-width: 8px;
+  min-height: 8px;
+  border-radius: 999px;
+  background-color: alpha(currentColor, 0.25);
+}
+.status-dot.ok        { background-color: @success_color; }
+.status-dot.attention { background-color: @warning_color; }
+.status-dot.unknown   { background-color: alpha(currentColor, 0.35); }
+.status-dot.missing   { background-color: @error_color; }
+
+.sidebar-badge {
+  font-size: smaller;
+  font-feature-settings: "tnum";
+  padding: 1px 7px;
+  border-radius: 999px;
+  background-color: alpha(currentColor, 0.1);
+}
+.sidebar-badge.attention { color: @warning_fg_color; background-color: @warning_bg_color; }
+
+/* Ref pills in the commit list and commit page */
+.ref-pill {
+  font-size: smaller;
+  font-weight: bold;
+  padding: 0 6px;
+  border-radius: 6px;
+}
+.ref-pill.head    { background-color: @accent_bg_color; color: @accent_fg_color; }
+.ref-pill.branch  { background-color: alpha(@accent_color, 0.15); color: @accent_color; }
+.ref-pill.remote  { background-color: alpha(currentColor, 0.1); }
+.ref-pill.tag     { background-color: alpha(@warning_color, 0.18); color: @warning_color; }
+.ref-pill.detached{ background-color: @error_bg_color; color: @error_fg_color; }
+
+/* Rows touch so the graph's lane lines join up from row to row. */
+.commit-list > row { padding: 0 8px 0 4px; margin: 0; border-radius: 0; }
+.commit-row { padding: 0; }
+.commit-row .subject { font-weight: 500; }
+.working-row .subject { font-style: italic; }
+
+.mono { font-family: monospace; }
+.numeric { font-feature-settings: "tnum"; }
+
+/* File status letters */
+.change-letter {
+  font-family: monospace;
+  font-weight: bold;
+  min-width: 18px;
+  border-radius: 4px;
+}
+.change-letter.added    { color: @success_color; }
+.change-letter.modified { color: @accent_color; }
+.change-letter.deleted  { color: @error_color; }
+.change-letter.renamed  { color: #9141ac; }
+.change-letter.conflict { color: @warning_color; }
+.additions { color: @success_color; }
+.deletions { color: @error_color; }
+
+/* Remote chips above the commit list */
+.remote-chip {
+  padding: 2px 8px;
+  border-radius: 999px;
+  min-height: 0;
+}
+.remote-chip.offline { color: alpha(currentColor, 0.55); }
+
+/* Dashboard */
+.dashboard-tile { padding: 14px 18px; }
+.dashboard-tile .big-number { font-size: 2em; font-weight: 800; font-feature-settings: "tnum"; }
+.repo-card { padding: 14px; }
+.repo-card .reason { font-size: smaller; }
+.level-ok        { color: @success_color; }
+.level-attention { color: @warning_color; }
+.level-unknown   { color: alpha(currentColor, 0.55); }
+.level-missing   { color: @error_color; }
+
+/* Diff and file views */
+.diff-view, .file-view { font-family: monospace; }
+.diff-view text, .file-view text { background-color: @view_bg_color; }
+.hunk-button { min-height: 0; padding: 0 8px; font-size: smaller; }
+
+.blame-gutter { color: alpha(currentColor, 0.6); }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>QDVC Spork</string>
+	<key>CFBundleExecutable</key>
+	<string>QDVCSpork</string>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.qdvc.spork.mac</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>QDVC Spork</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.developer-tools</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string>QDVC Apps</string>
+	<!-- Lets `open -b org.qdvc.spork.mac <folder>` (the spork command) and
+	     folders dropped on the Dock icon reach application(_:open:). -->
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Folder</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.folder</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

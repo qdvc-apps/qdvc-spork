@@ -1,0 +1,17 @@
+#!/bin/sh
+# spork — open a Git repository in QDVC Spork.  Usage: spork [path]
+# Installed by QDVC Spork (macos/scripts/build-app.sh --install).
+target="${1:-.}"
+if [ ! -e "$target" ]; then
+    echo "spork: $target: no such file or directory" >&2
+    exit 2
+fi
+dir=$(cd "$target" 2>/dev/null && pwd -P) || dir=$(cd "$(dirname "$target")" && pwd -P)
+top=$(git -C "$dir" rev-parse --show-toplevel 2>/dev/null) || {
+    echo "spork: $dir is not inside a Git repository" >&2
+    exit 1
+}
+open -b org.qdvc.spork.mac "$top" 2>/dev/null || {
+    echo "spork: QDVC Spork isn't installed (run macos/scripts/build-app.sh --install)" >&2
+    exit 1
+}

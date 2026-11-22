@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=QDVC Spork
+GenericName=Git Client
+Comment=Browse, commit, fetch and push across bookmarked Git repositories
+Exec=qdvc-spork %f
+Icon=qdvc.spork.gtk4app
+Terminal=false
+Categories=Development;RevisionControl;GTK;GNOME;
+Keywords=git;repository;commit;diff;branch;remote;fetch;push;pull;
+MimeType=inode/directory;
+StartupNotify=true
+StartupWMClass=qdvc.spork.gtk4app

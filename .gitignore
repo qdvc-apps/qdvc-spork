@@ -1,0 +1,18 @@
+# Build output
+build/
+gtk4/build/
+macos/build/
+macos/.build/
+macos/.swiftpm/
+.flatpak-builder/
+
+# Python
+__pycache__/
+*.pyc
+
+# Editors and OS
+.DS_Store
+*.swp
+.vscode/
+.idea/
+xcuserdata/
