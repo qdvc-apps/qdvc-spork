@@ -9,3 +9,4 @@ for filing in the qdvc-cursed-knowledge `reports/inbox/`.
 | Date | Report | Status |
 |---|---|---|
 | 2026-11-22 | [A `??` fallback written as an unlabeled tuple silently drops the tuple's labels](2026-11-22-macos-swift-nil-coalescing-drops-tuple-labels.md) | Fix not yet confirmed |
+| 2026-11-22 | [A global function named like a SwiftUI modifier is invisible inside views](2026-11-22-macos-swift-global-function-shadowed-by-view-modifier.md) | Fix not yet confirmed |

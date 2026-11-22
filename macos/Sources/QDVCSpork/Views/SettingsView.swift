@@ -52,7 +52,7 @@ struct GeneralSettings: View {
         .formStyle(.grouped)
         .task {
             let runner = model.runner
-            let v = try? await background { runner.version() }
+            let v = try? await offMain { runner.version() }
             gitVersion = v ?? "git not found"
         }
     }
@@ -180,7 +180,7 @@ struct ServersSettings: View {
         testing = url
         Task {
             do {
-                let label: String? = try await background {
+                let label: String? = try await offMain {
                     for b in bookmarks {
                         let repo = Repository(runner: runner, path: b.path)
                         for r in (try? repo.remotes()) ?? [] where Certificates.server(for: r.fetchURL, in: [(url, "")]) != nil {

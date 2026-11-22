@@ -32,6 +32,10 @@ Keep this block in step with the sibling apps when either changes.
 - Models are passed to views explicitly (no `@Environment` model lookups), and list
   selections use `Binding(guarded:set:)` so unchanged values aren't written back.
 - `ResizableHSplit` replaces `HSplitView` (which ignores the safe area).
+- Module-level helpers must not share a name with any `View` member: inside a view,
+  `background { … }` resolves to the `.background` modifier. The off-main-thread helper is
+  `offMain`.
+- Labeled tuples lose their labels through `x ?? (a, b)`; use named types (`FetchContext`).
 - The app uses a single `Window` scene, not `WindowGroup`.
 
 ## Things not yet verified on a Mac

@@ -128,7 +128,7 @@ final class RepoModel {
         if showBusy { busy += 1 }
         Task {
             do {
-                let value = try await background(work)
+                let value = try await offMain(work)
                 if showBusy { busy -= 1 }
                 if isCurrent(key, t) { done(value) }
             } catch {
@@ -456,7 +456,7 @@ final class RepoModel {
         let t = token("delete")
         Task {
             do {
-                try await background { try repo.deleteBranch(name, force: force) }
+                try await offMain { try repo.deleteBranch(name, force: force) }
                 guard isCurrent("delete", t) else { return }
                 app.show("Deleted \(name)")
                 refresh()
@@ -504,7 +504,7 @@ final class RepoModel {
         busy += 1
         Task {
             do {
-                try await background { try repo.pull(remote, branch: branch, mode: mode) }
+                try await offMain { try repo.pull(remote, branch: branch, mode: mode) }
                 busy -= 1
                 app.show("Pulled from \(remote)")
             } catch let e as GitError where mode == .ffOnly &&
@@ -528,7 +528,7 @@ final class RepoModel {
         let repo = self.repo
         busy += 1
         Task {
-            let results: [(String, Error?)] = (try? await background {
+            let results: [(String, Error?)] = (try? await offMain {
                 targets.map { r -> (String, Error?) in
                     do { try repo.push(r, branch: branch, setUpstream: setUpstream); return (r, nil) }
                     catch { return (r, error) }

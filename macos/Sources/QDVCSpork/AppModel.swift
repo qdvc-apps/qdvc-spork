@@ -3,7 +3,12 @@ import Observation
 import SporkCore
 
 /// Runs blocking git work off the main thread.
-func background<T>(_ work: @escaping () throws -> T) async throws -> T {
+///
+/// Deliberately not called `background`: inside a SwiftUI view, an unqualified
+/// `background { … }` finds the `View.background(…)` modifiers first, and the
+/// global function is never considered (Cursed Knowledge report in
+/// cursed-knowledge-reports/).
+func offMain<T>(_ work: @escaping () throws -> T) async throws -> T {
     try await Task.detached(priority: .userInitiated) { try work() }.value
 }
 
@@ -118,7 +123,7 @@ final class AppModel {
     func open(path: String) {
         let runner = self.runner
         Task {
-            let top = try? await background { Repository.findToplevel(runner: runner, path: path) }
+            let top = try? await offMain { Repository.findToplevel(runner: runner, path: path) }
             guard let top else {
                 alert = AppAlert(title: "Not a Git Repository",
                                  message: "\(path) isn't inside a Git repository.")
@@ -148,7 +153,7 @@ final class AppModel {
         let runner = self.runner
         let ctx: FetchContext = lastFetch?.context(for: path) ?? noFetchContext
         Task {
-            let s = try? await background {
+            let s = try? await offMain {
                 Census.summarize(path: path, runner: runner, fetchErrors: ctx.errors, offline: ctx.offline)
             }
             if let s { summaries[path] = s }
@@ -168,7 +173,7 @@ final class AppModel {
         let all = settings.bookmarks.map(\.path)
         let targets = paths ?? all
         let runner = self.runner
-        let report: FetchReport? = try? await background {
+        let report: FetchReport? = try? await offMain {
             var report = FetchReport()
             var remotes: [String: [Remote]] = [:]
             for p in targets {
@@ -255,7 +260,7 @@ final class AppModel {
     func remoteURLsByLabel() async -> [String: String] {
         let runner = self.runner
         let bms = settings.bookmarks
-        return (try? await background {
+        return (try? await offMain {
             var out: [String: String] = [:]
             for b in bms {
                 for r in (try? Repository(runner: runner, path: b.path).remotes()) ?? [] {
